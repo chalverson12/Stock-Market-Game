@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Market Prediction Game</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📈 Stock Market Prediction Game</h1>
+            <p>Test your market instincts with real stock data!</p>
+        </header>
+
+        <div class="game-container">
+            <!-- Stock Input Section -->
+            <div class="input-section" id="inputSection">
+                <div class="card">
+                    <h2>Enter Stock Symbol</h2>
+                    <div class="input-group">
+                        <input type="text" id="stockInput" placeholder="e.g., AAPL, MSFT, TSLA" maxlength="10">
+                        <button id="startGame" onclick="startGame()">Start Game</button>
+                    </div>
+                    <div id="errorMessage" class="error-message"></div>
+                    <div id="loadingMessage" class="loading-message">Loading stock data...</div>
+                </div>
+            </div>
+
+            <!-- Game Section -->
+            <div class="game-section" id="gameSection" style="display: none;">
+                <div class="game-info">
+                    <div class="info-card">
+                        <h3 id="stockSymbol"></h3>
+                        <p>Current Date: <span id="currentDate"></span></p>
+                        <p>Score: <span id="score">0</span></p>
+                    </div>
+                </div>
+
+                <div class="chart-container">
+                    <canvas id="stockChart"></canvas>
+                </div>
+
+                <div class="prediction-section" id="predictionSection">
+                    <div class="card">
+                        <h3>Make Your Prediction</h3>
+                        <p>Will the stock price go <strong>UP</strong> or <strong>DOWN</strong> tomorrow?</p>
+                        <div class="prediction-buttons">
+                            <button class="predict-btn up" onclick="makePrediction('up')">📈 UP</button>
+                            <button class="predict-btn down" onclick="makePrediction('down')">📉 DOWN</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="result-section" id="resultSection" style="display: none;">
+                    <div class="card">
+                        <h3 id="resultTitle"></h3>
+                        <p id="resultMessage"></p>
+                        <button onclick="nextDay()" class="next-btn">Continue to Next Day</button>
+                        <button onclick="endGame()" class="end-btn">End Game</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

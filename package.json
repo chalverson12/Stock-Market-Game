@@ -1,0 +1,28 @@
+{
+  "name": "stock-market-prediction-game",
+  "version": "1.0.0",
+  "description": "A web-based game that tests your ability to predict stock market movements using real-time data",
+  "main": "index.html",
+  "scripts": {
+    "start": "python -m http.server 8000",
+    "serve": "python3 -m http.server 8000"
+  },
+  "keywords": [
+    "stock-market",
+    "prediction",
+    "game",
+    "finance",
+    "alpha-vantage",
+    "chart.js"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "homepage": "https://yourusername.github.io/stock-market-prediction-game",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yourusername/stock-market-prediction-game.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/stock-market-prediction-game/issues"
+  }
+}
