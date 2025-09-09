@@ -38,11 +38,13 @@ This game uses the Alpha Vantage API to fetch real stock market data. The API pr
 
 ## 🎯 Game Rules
 
-- Only weekday (Monday-Friday) dates are used for predictions
-- Starting dates are randomly selected between 1-100 days ago
-- You see 7 days of historical data before making predictions
-- Score increases by 1 for each correct prediction
-- Game continues until you choose to end or run out of data
+- **5 Round Format**: Each game consists of exactly 5 prediction rounds
+- **Weekdays Only**: Only weekday (Monday-Friday) dates are used for predictions
+- **Random Start Date**: Starting dates are randomly selected between 1-100 days ago
+- **Historical Context**: You see 7 days of historical data before making predictions
+- **Scoring**: Score increases by 1 for each correct prediction (max score: 5/5)
+- **High Score Tracking**: Your best score is saved and you're notified of new records
+- **Game Over**: After 5 rounds, see your final results and compare to your high score
 
 ## 🌐 Live Demo
 
@@ -51,13 +53,15 @@ Visit the live game at: https://chalverson12.github.io/Stock-Market-Game/
 ## 🎮 Game Features
 
 - **Real-Time Stock Data**: Fetches actual market data using Alpha Vantage API
+- **High Score System**: Track your best performance over exactly 5 rounds with persistent storage
 - **Dynamic Brand Theming**: Background and UI colors change based on the stock's brand colors
 - **Smart Date Selection**: Automatically selects valid trading days (weekdays only)
 - **Interactive Predictions**: Make UP/DOWN predictions and track your accuracy
 - **Beautiful Visualizations**: Dynamic charts that update with each prediction and match brand colors
 - **Live Color Preview**: See theme colors change as you type popular stock symbols
+- **Game Over Celebration**: Special messages for perfect scores and new records
 - **Responsive Design**: Works perfectly on desktop and mobile devices
-- **Score Tracking**: Keep track of your prediction accuracy over time
+- **Persistent Progress**: High scores are saved locally and persist between sessions
 
 ### 🎨 Supported Brand Colors
 The game includes custom color themes for 30+ popular stocks including:

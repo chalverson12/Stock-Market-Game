@@ -34,7 +34,9 @@
                     <div class="info-card">
                         <h3 id="stockSymbol"></h3>
                         <p>Current Date: <span id="currentDate"></span></p>
-                        <p>Score: <span id="score">0</span></p>
+                        <p>Score: <span id="score">0</span> / 5</p>
+                        <p>Round: <span id="roundCounter">1</span> of 5</p>
+                        <p>High Score: <span id="highScore">0</span></p>
                     </div>
                 </div>
 
@@ -57,8 +59,23 @@
                     <div class="card">
                         <h3 id="resultTitle"></h3>
                         <p id="resultMessage"></p>
-                        <button onclick="nextDay()" class="next-btn">Continue to Next Day</button>
+                        <button onclick="nextRound()" class="next-btn" id="nextRoundBtn">Next Round</button>
                         <button onclick="endGame()" class="end-btn">End Game</button>
+                    </div>
+                </div>
+
+                <div class="game-over-section" id="gameOverSection" style="display: none;">
+                    <div class="card">
+                        <h2 id="gameOverTitle">🎉 Game Complete!</h2>
+                        <div class="final-stats">
+                            <p class="final-score">Final Score: <span id="finalScore">0</span> / 5</p>
+                            <p class="accuracy">Accuracy: <span id="finalAccuracy">0</span>%</p>
+                            <p id="highScoreMessage" class="high-score-msg"></p>
+                        </div>
+                        <div class="game-over-buttons">
+                            <button onclick="startNewGame()" class="new-game-btn">🚀 New Game</button>
+                            <button onclick="resetHighScore()" class="reset-btn">Reset High Score</button>
+                        </div>
                     </div>
                 </div>
             </div>

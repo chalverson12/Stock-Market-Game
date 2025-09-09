@@ -6,7 +6,9 @@ let gameData = {
     score: 0,
     chart: null,
     startDate: null,
-    gameStarted: false
+    gameStarted: false,
+    roundsPlayed: 0,
+    maxRounds: 5
 };
 
 const API_KEY = 'U8CB7ISX127DVDAQ';
@@ -107,6 +109,20 @@ function updateBackgroundGradient(stockSymbol) {
     document.head.appendChild(style);
     
     console.log(`Updated theme for ${stockSymbol} with colors:`, colors);
+}
+
+// High score management functions
+function getHighScore() {
+    const highScore = localStorage.getItem('stockGameHighScore');
+    return highScore ? parseInt(highScore) : 0;
+}
+
+function setHighScore(score) {
+    localStorage.setItem('stockGameHighScore', score.toString());
+}
+
+function isNewHighScore(currentScore) {
+    return currentScore > getHighScore();
 }
 
 // Utility function to format dates
@@ -265,7 +281,9 @@ async function startGame() {
             score: 0,
             chart: null,
             startDate: startDate,
-            gameStarted: true
+            gameStarted: true,
+            roundsPlayed: 0,
+            maxRounds: 5
         };
         
         // Update background gradient based on stock brand colors
@@ -298,6 +316,8 @@ function initializeGameUI() {
     document.getElementById('stockSymbol').textContent = gameData.stockSymbol;
     document.getElementById('currentDate').textContent = formatDate(gameData.stockData[gameData.currentDateIndex].date);
     document.getElementById('score').textContent = gameData.score;
+    document.getElementById('roundCounter').textContent = gameData.roundsPlayed + 1;
+    document.getElementById('highScore').textContent = getHighScore();
     
     // Create the chart with initial 7 days of data
     createChart();
@@ -305,6 +325,7 @@ function initializeGameUI() {
     // Show prediction section
     document.getElementById('predictionSection').style.display = 'block';
     document.getElementById('resultSection').style.display = 'none';
+    document.getElementById('gameOverSection').style.display = 'none';
 }
 
 // Create the stock chart
@@ -407,13 +428,23 @@ function makePrediction(direction) {
     
     const isCorrect = direction === actualDirection;
     
-    // Update score
+    // Update score and rounds
     if (isCorrect) {
         gameData.score++;
     }
+    gameData.roundsPlayed++;
     
     // Show result
     showPredictionResult(isCorrect, currentPrice, nextPrice, actualDirection);
+    
+    // Update button text based on rounds remaining
+    const nextRoundBtn = document.getElementById('nextRoundBtn');
+    if (gameData.roundsPlayed >= gameData.maxRounds) {
+        nextRoundBtn.textContent = 'View Final Results';
+        nextRoundBtn.onclick = showGameOver;
+    } else {
+        nextRoundBtn.textContent = `Round ${gameData.roundsPlayed + 1}`;
+    }
     
     // Hide prediction section, show result section
     document.getElementById('predictionSection').style.display = 'none';
@@ -439,30 +470,74 @@ function showPredictionResult(isCorrect, currentPrice, nextPrice, actualDirectio
     `;
 }
 
-// Continue to next day
-function nextDay() {
+// Continue to next round
+function nextRound() {
+    // Check if game is complete
+    if (gameData.roundsPlayed >= gameData.maxRounds) {
+        showGameOver();
+        return;
+    }
+    
     // Move to next day
     gameData.currentDateIndex++;
     
-    // Update current date display
+    // Update displays
     document.getElementById('currentDate').textContent = formatDate(gameData.stockData[gameData.currentDateIndex].date);
-    
-    // Update score display
     document.getElementById('score').textContent = gameData.score;
+    document.getElementById('roundCounter').textContent = gameData.roundsPlayed + 1;
     
     // Update chart with new data point
     updateChart();
     
     // Check if we have more data
     if (gameData.currentDateIndex >= gameData.stockData.length - 1) {
-        alert(`Game Over! Your final score is ${gameData.score}. No more data available.`);
-        endGame();
+        showGameOver();
         return;
     }
     
     // Show prediction section, hide result section
     document.getElementById('predictionSection').style.display = 'block';
     document.getElementById('resultSection').style.display = 'none';
+}
+
+// Show game over screen
+function showGameOver() {
+    const finalScore = gameData.score;
+    const accuracy = ((finalScore / gameData.maxRounds) * 100).toFixed(1);
+    const currentHighScore = getHighScore();
+    const isNewRecord = isNewHighScore(finalScore);
+    
+    // Update high score if needed
+    if (isNewRecord) {
+        setHighScore(finalScore);
+    }
+    
+    // Update displays
+    document.getElementById('finalScore').textContent = finalScore;
+    document.getElementById('finalAccuracy').textContent = accuracy;
+    
+    // High score message
+    const highScoreMsg = document.getElementById('highScoreMessage');
+    if (isNewRecord) {
+        highScoreMsg.textContent = `🎉 NEW HIGH SCORE! You beat your previous best of ${currentHighScore}!`;
+        highScoreMsg.className = 'high-score-msg new-record';
+        document.getElementById('gameOverTitle').textContent = '🏆 New High Score!';
+    } else {
+        highScoreMsg.textContent = `Your high score is still ${getHighScore()}. Can you beat it?`;
+        highScoreMsg.className = 'high-score-msg no-record';
+        if (finalScore === gameData.maxRounds) {
+            document.getElementById('gameOverTitle').textContent = '🎯 Perfect Score!';
+        } else if (finalScore >= 4) {
+            document.getElementById('gameOverTitle').textContent = '🌟 Great Job!';
+        } else {
+            document.getElementById('gameOverTitle').textContent = '📈 Game Complete!';
+        }
+    }
+    
+    // Hide other sections, show game over
+    document.getElementById('predictionSection').style.display = 'none';
+    document.getElementById('resultSection').style.display = 'none';
+    document.getElementById('gameOverSection').style.display = 'block';
 }
 
 // Update chart with new data point
@@ -486,20 +561,57 @@ function updateChart() {
     gameData.chart.update();
 }
 
-// End game
-function endGame() {
-    const finalScore = gameData.score;
-    const totalPredictions = gameData.currentDateIndex - findStartDateIndex(gameData.stockData, gameData.startDate);
-    
-    alert(`Game Over!\n\nFinal Score: ${finalScore}/${totalPredictions}\nAccuracy: ${totalPredictions > 0 ? ((finalScore/totalPredictions) * 100).toFixed(1) : 0}%`);
-    
+// Start a new game
+function startNewGame() {
     // Reset background to default
     updateBackgroundGradient('DEFAULT');
     
-    // Reset game
-    setTimeout(() => {
-        location.reload();
-    }, 1000);
+    // Reset game state
+    gameData = {
+        stockSymbol: '',
+        stockData: [],
+        currentDateIndex: 0,
+        score: 0,
+        chart: null,
+        startDate: null,
+        gameStarted: false,
+        roundsPlayed: 0,
+        maxRounds: 5
+    };
+    
+    // Show input section, hide game sections
+    document.getElementById('inputSection').style.display = 'block';
+    document.getElementById('gameSection').style.display = 'none';
+    document.getElementById('gameOverSection').style.display = 'none';
+    
+    // Clear input field
+    document.getElementById('stockInput').value = '';
+    
+    // Clear any error messages
+    const errorMessage = document.getElementById('errorMessage');
+    errorMessage.classList.remove('show');
+    
+    // Re-enable start button
+    const startButton = document.getElementById('startGame');
+    startButton.disabled = false;
+}
+
+// Reset high score
+function resetHighScore() {
+    if (confirm('Are you sure you want to reset your high score? This cannot be undone.')) {
+        localStorage.removeItem('stockGameHighScore');
+        document.getElementById('highScore').textContent = '0';
+        
+        // Update the high score message
+        const highScoreMsg = document.getElementById('highScoreMessage');
+        highScoreMsg.textContent = 'High score has been reset. Good luck!';
+        highScoreMsg.className = 'high-score-msg no-record';
+    }
+}
+
+// End game (for manual end)
+function endGame() {
+    showGameOver();
 }
 
 // Allow Enter key to start game and add input validation
