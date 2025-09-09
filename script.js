@@ -394,11 +394,28 @@ function endGame() {
     location.reload();
 }
 
-// Allow Enter key to start game
+// Allow Enter key to start game and add input validation
 document.addEventListener('DOMContentLoaded', function() {
-    document.getElementById('stockInput').addEventListener('keypress', function(e) {
+    const stockInput = document.getElementById('stockInput');
+    
+    stockInput.addEventListener('keypress', function(e) {
         if (e.key === 'Enter') {
             startGame();
         }
     });
+    
+    // Auto-uppercase and validate input
+    stockInput.addEventListener('input', function(e) {
+        let value = e.target.value.toUpperCase().replace(/[^A-Z]/g, '');
+        if (value.length > 5) value = value.substring(0, 5); // Limit to 5 characters
+        e.target.value = value;
+        
+        // Clear any existing error messages when user starts typing
+        const errorMessage = document.getElementById('errorMessage');
+        errorMessage.classList.remove('show');
+    });
+    
+    // Add some popular stock suggestions
+    const suggestions = ['AAPL', 'MSFT', 'GOOGL', 'AMZN', 'TSLA', 'META', 'NVDA', 'JPM', 'JNJ', 'V'];
+    stockInput.setAttribute('placeholder', suggestions[Math.floor(Math.random() * suggestions.length)] + ' (example)');
 });

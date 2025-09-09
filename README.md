@@ -46,7 +46,16 @@ This game uses the Alpha Vantage API to fetch real stock market data. The API pr
 
 ## 🌐 Live Demo
 
-Visit the live game at: [Your GitHub Pages URL]
+Visit the live game at: https://chalverson12.github.io/Stock-Market-Game/
+
+## 🎮 Game Features
+
+- **Real-Time Stock Data**: Fetches actual market data using Alpha Vantage API
+- **Smart Date Selection**: Automatically selects valid trading days (weekdays only)
+- **Interactive Predictions**: Make UP/DOWN predictions and track your accuracy
+- **Beautiful Visualizations**: Dynamic charts that update with each prediction
+- **Responsive Design**: Works perfectly on desktop and mobile devices
+- **Score Tracking**: Keep track of your prediction accuracy over time
 
 ## 📝 License
 
