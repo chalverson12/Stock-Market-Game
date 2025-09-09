@@ -51,11 +51,20 @@ Visit the live game at: https://chalverson12.github.io/Stock-Market-Game/
 ## 🎮 Game Features
 
 - **Real-Time Stock Data**: Fetches actual market data using Alpha Vantage API
+- **Dynamic Brand Theming**: Background and UI colors change based on the stock's brand colors
 - **Smart Date Selection**: Automatically selects valid trading days (weekdays only)
 - **Interactive Predictions**: Make UP/DOWN predictions and track your accuracy
-- **Beautiful Visualizations**: Dynamic charts that update with each prediction
+- **Beautiful Visualizations**: Dynamic charts that update with each prediction and match brand colors
+- **Live Color Preview**: See theme colors change as you type popular stock symbols
 - **Responsive Design**: Works perfectly on desktop and mobile devices
 - **Score Tracking**: Keep track of your prediction accuracy over time
+
+### 🎨 Supported Brand Colors
+The game includes custom color themes for 30+ popular stocks including:
+- **Tech**: AAPL (Apple Blue), MSFT (Microsoft Blue), GOOGL (Google), TSLA (Tesla Red), NVDA (NVIDIA Green)
+- **Financial**: JPM (JPMorgan Blue), V (Visa Blue/Gold), MA (Mastercard Orange/Red)
+- **Consumer**: KO (Coca-Cola Red), MCD (McDonald's Yellow/Red), DIS (Disney Blue/Gold)
+- And many more! Unknown tickers use a beautiful default gradient.
 
 ## 📝 License
 
